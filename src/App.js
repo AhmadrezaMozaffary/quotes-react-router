@@ -12,12 +12,12 @@ function App() {
     <Layout>
       <Switch>
         <Route path="/" exact>
-          <Redirect to="/qoutes" />
+          <Redirect to="/quotes" />
         </Route>
-        <Route path="/qoutes" exact>
+        <Route path="/quotes" exact>
           <AllQoutes />
         </Route>
-        <Route path="/qoutes/:qouteID">
+        <Route path="/quotes/:quoteId">
           <QouteDetail />
         </Route>
         <Route path="/new-qoute">

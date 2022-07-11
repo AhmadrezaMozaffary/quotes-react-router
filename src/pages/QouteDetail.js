@@ -1,41 +1,62 @@
-import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, Route, useParams } from "react-router-dom";
 import Comments from "../components/comments/Comments";
 import HighlightedQoute from "../components/quotes/HighlightedQuote";
-
-const DUMMY_DATA = [
-  { id: "q1", author: "Ahmad", text: "Learning react is great!" },
-  { id: "q2", author: "Ahmadreza", text: "Learning react is fun!" },
-];
+import LoadingSpinner from "../components/UI/LoadingSpinner";
+import useHttp from "../hooks/use-http";
+import { getSingleQuote } from "../lib/api";
 
 const QouteDetail = () => {
-  const { qouteID: ID } = useParams();
-  const { path } = useRouteMatch();
+  const { quoteId: ID } = useParams();
+  // const { path } = useRouteMatch();
 
-  const qoute = DUMMY_DATA.find((qoute) => qoute.id === ID);
+  const {
+    sendRequest,
+    status,
+    data: loadedQoutes,
+    error,
+  } = useHttp(getSingleQuote, true);
 
-  if (!qoute) {
+  useEffect(() => {
+    sendRequest(ID);
+  }, [sendRequest, ID]);
+
+  if (status === "pending") {
+    return (
+      <div className="centered">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="centered focused">{error}</p>;
+  }
+  // console.log(/);
+
+  if (!loadedQoutes.text) {
     return (
       <>
-        <h1>404 No Qoute found !</h1>
-        <Link to="/qoutes">Home</Link>
+        <p>No Quote found!</p>
+        <Link to="/quotes">Home</Link>
       </>
     );
   }
 
   return (
     <>
-      <HighlightedQoute text={qoute.text} author={qoute.author} />
-      <Route path={path} exact>
+      <HighlightedQoute text={loadedQoutes.text} author={loadedQoutes.author} />
+      <Route path={`/quotes/${ID}`} exact>
         <div className="centered">
-          <Link className="btn--flat" to={`${path}/comments`}>
+          <Link className="btn--flat" to={`/quotes/${ID}/comments`}>
             Load comments
           </Link>
         </div>
       </Route>
-      <Route path={`${path}/comments`} exact>
-        <Comments />
+      <Route path={`/quotes/${ID}/comments`} exact>
+        <Comments quoteId={ID} />
         <div className="centered">
-          <Link className="btn--flat" to={path}>
+          <Link className="btn--flat" to={`/quotes/${ID}`}>
             Close comments
           </Link>{" "}
         </div>
