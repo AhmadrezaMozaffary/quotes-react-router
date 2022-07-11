@@ -24,8 +24,20 @@ const QouteDetail = () => {
   return (
     <>
       <HighlightedQoute text={qoute.text} author={qoute.author} />
+      <Route path={`/qoutes/${ID}`} exact>
+        <div className="centered">
+          <Link className="btn--flat" to={`/qoutes/${ID}/comments`}>
+            Load comments
+          </Link>
+        </div>
+      </Route>
       <Route path={`/qoutes/${ID}/comments`} exact>
         <Comments />
+        <div className="centered">
+          <Link className="btn--flat" to={`/qoutes/${ID}`}>
+            Close comments
+          </Link>{" "}
+        </div>
       </Route>
     </>
   );
