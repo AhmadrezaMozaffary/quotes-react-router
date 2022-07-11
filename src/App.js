@@ -2,10 +2,10 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 
 // Pages 📑
-import AllQoutes from "./pages/AllQoutes";
-import NewQoute from "./pages/NewQoute";
+import AllQoutes from "./pages/AllQuotes";
+import NewQoute from "./pages/NewQuote";
 import NotFound from "./pages/NotFound";
-import QouteDetail from "./pages/QouteDetail";
+import QouteDetail from "./pages/QuoteDetail";
 
 function App() {
   return (
